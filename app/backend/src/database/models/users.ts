@@ -32,7 +32,7 @@ users.init({
     allowNull: false,
   },
 }, {
-  sequelize: db, modelName: 'teams', underscored: true, timestamps: false,
+  sequelize: db, modelName: 'users', underscored: true, timestamps: false,
 });
 
 export default users;
