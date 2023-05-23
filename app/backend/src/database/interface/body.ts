@@ -1,8 +1,8 @@
-type Body = {
+type BodyInterface = {
   homeTeamId: number;
   awayTeamId: number;
   homeTeamGoals: number;
   awayTeamGoals: number;
 };
 
-export default Body;
+export default BodyInterface;

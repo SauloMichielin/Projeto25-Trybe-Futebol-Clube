@@ -1,14 +1,14 @@
-import Matches from '../models/matches';
-import Teams from '../models/teams';
+import matches from '../models/matches';
+import teams from '../models/teams';
 import MatchesInterface from '../interface/matchesInterface';
-import Body from '../interface/body';
+import BodyInterface from '../interface/body';
 
 export default class MatchesService {
   static async getAll(): Promise<MatchesInterface[]> {
-    const resultado = await Matches.findAll({
+    const resultado = await matches.findAll({
       include: [
-        { model: Teams, as: 'homeTeam', attributes: ['teamName'] },
-        { model: Teams, as: 'awayTeam', attributes: ['teamName'] },
+        { model: teams, as: 'homeTeam', attributes: ['teamName'] },
+        { model: teams, as: 'awayTeam', attributes: ['teamName'] },
       ],
     });
     console.log(resultado);
@@ -16,21 +16,21 @@ export default class MatchesService {
   }
 
   static async finish(id: number): Promise<MatchesInterface | undefined> {
-    const partida = await Matches.findByPk(id);
+    const partida = await matches.findByPk(id);
     if (!partida) throw new (Error)();
     return partida.update({ inProgress: false });
   }
 
   static async up(id: number, homeTeamGoals: number, awayTeamGoals: number)
     : Promise<MatchesInterface | undefined> {
-    const partida = await Matches.findByPk(id);
+    const partida = await matches.findByPk(id);
     if (!partida) throw new (Error)();
     return partida.update({ homeTeamGoals, awayTeamGoals });
   }
 
-  static async add(body: Body): Promise<MatchesInterface> {
-    const createMatch = await Matches.create(body);
-    const resultado = await Matches.findOne({ where: createMatch.dataValues.id });
+  static async add(body: BodyInterface): Promise<MatchesInterface> {
+    const match = await matches.create(body);
+    const resultado = await matches.findOne({ where: match.dataValues.id });
     if (!resultado) throw new (Error)();
     return resultado;
   }
