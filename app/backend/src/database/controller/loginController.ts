@@ -1,23 +1,18 @@
 import { Request, Response } from 'express';
 import loginService from '../service/loginService';
+import { decode, token } from '../uteis/token';
 
 export default class loginController {
-  static async login(req: Request, res: Response) {
-    const { email, password } = req.body;
-    const { status, message, token } = await loginService.login(email, password);
-    if (status !== 200) {
-      return res.status(status).json({ message });
-    }
-    return res.status(status).json({ token });
+  public static async login(req: Request, res: Response) {
+    const { email } = req.body;
+    const createToken = token(email);
+    return res.status(200).json({ token: createToken });
   }
 
   static async getByRole(req: Request, res: Response) {
-    const { authorization } = req.headers;
-    if (!authorization) throw new (Error)();
-    const response = await loginService.getByRole(authorization);
-    if (response.status !== 200) {
-      return res.status(response.status).json({ message: response.message });
-    }
-    return res.status(response.status).json(response.role);
+    const verToken = req.header('Authorization');
+    const email = decode(verToken);
+    const busca = await loginService.getByRole(email.toString());
+    return res.status(200).json({ role: busca });
   }
 }

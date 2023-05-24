@@ -7,8 +7,8 @@ export default class teamService {
     return response;
   }
 
-  static async getById(id: string): Promise<teamInterface | null> {
-    const response = await teams.findByPk(id);
+  static async getById(id: number): Promise<teamInterface | null> {
+    const response = await teams.findOne({ where: { id } });
     return response;
   }
 }

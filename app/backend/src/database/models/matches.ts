@@ -36,12 +36,15 @@ matches.init({
   inProgress: {
     allowNull: false,
     type: DataTypes.BOOLEAN,
+    defaultValue: 'true',
   },
 }, {
   sequelize: db, modelName: 'matches', underscored: true, timestamps: false,
 });
 
-matches.belongsTo(teams, { as: 'homeTeam', foreignKey: 'homeTeamId' });
-matches.belongsTo(teams, { as: 'awayTeam', foreignKey: 'awayTeamId' });
+matches.belongsTo(teams, { foreignKey: 'homeTeamId', as: 'homeTeam' });
+matches.belongsTo(teams, { foreignKey: 'awayTeamId', as: 'awayTeam' });
+teams.hasMany(matches, { foreignKey: 'awayTeamId', as: 'awayMatches' });
+teams.hasMany(matches, { foreignKey: 'homeTeamId', as: 'homeMatches' });
 
 export default matches;

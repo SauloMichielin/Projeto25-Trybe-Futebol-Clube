@@ -1,21 +1,31 @@
 import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 
-const SECRET_KEY = process.env.JWT_SECRET || 'SauloToken';
+const password = process.env.JWT_SECRET || 'SauloToken';
 
-const token = (email: string) => jwt.sign(email, SECRET_KEY);
+// criar token
+const token = (user: string): string => {
+  const createToken = jwt.sign(user, password);
+  return createToken;
+};
 
-const validate = (_req: Request, res: Response, next: NextFunction) => {
-  const result = _req.headers.authorization;
-  if (!result) {
+// decodificar token
+const decode = (verToken: any) => jwt.verify(verToken, password);
+
+// validar token
+const validate = (req: Request, res: Response, next: NextFunction) => {
+  const verToken = req.header('Authorization');
+  if (!verToken) {
     return res.status(401).json({ message: 'Token not found' });
   }
   try {
-    const validToken = jwt.verify(result, SECRET_KEY);
-    if (validToken) return next();
-  } catch (error: unknown) {
+    const resultado = jwt.verify(verToken, password);
+    if (resultado) {
+      return next();
+    }
+  } catch (err) {
     return res.status(401).json({ message: 'Token must be a valid token' });
   }
 };
 
-export { token, validate };
+export { token, validate, decode };
