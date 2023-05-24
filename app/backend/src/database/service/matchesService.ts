@@ -1,7 +1,6 @@
 import matches from '../models/matches';
 import teams from '../models/teams';
 import MatchesInterface from '../interface/matchesInterface';
-import BodyInterface from '../interface/body';
 
 export default class MatchesService {
   static async getAll(): Promise<MatchesInterface[]> {
@@ -21,17 +20,17 @@ export default class MatchesService {
     return partida.update({ inProgress: false });
   }
 
-  static async up(id: number, homeTeamGoals: number, awayTeamGoals: number)
-    : Promise<MatchesInterface | undefined> {
-    const partida = await matches.findByPk(id);
-    if (!partida) throw new (Error)();
-    return partida.update({ homeTeamGoals, awayTeamGoals });
+  static async up(id: number, homeTeamGoals: number, awayTeamGoals: number): Promise<void> {
+    await matches.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
   }
 
-  static async add(body: BodyInterface): Promise<MatchesInterface> {
-    const match = await matches.create(body);
-    const resultado = await matches.findOne({ where: match.dataValues.id });
-    if (!resultado) throw new (Error)();
-    return resultado;
+  static async add(
+    homeTeamId: number,
+    awayTeamId: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ) {
+    const match = matches.create({ homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals });
+    return match;
   }
 }

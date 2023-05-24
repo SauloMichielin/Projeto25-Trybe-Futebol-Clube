@@ -28,9 +28,14 @@ export default class matchesController {
     return res.status(200).json({ message: 'Successfully Updated' });
   }
 
-  static async add(req: Request, res: Response): Promise<Response> {
-    const { body } = req;
-    const resultado = await matchesService.add(body);
-    return res.status(201).json(resultado);
+  static async add(req: Request, res: Response) {
+    const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = req.body;
+    const resultado = await matchesService.add(
+      homeTeamId,
+      awayTeamId,
+      homeTeamGoals,
+      awayTeamGoals,
+    );
+    res.status(201).json(resultado);
   }
 }
