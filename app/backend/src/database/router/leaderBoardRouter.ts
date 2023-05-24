@@ -3,8 +3,8 @@ import BoardController from '../controller/leaderBoardController';
 
 const BoardRouter = Router();
 
-BoardRouter.get('/home', BoardController.homeTeams);
-BoardRouter.get('/away', BoardController.awayTeams);
-BoardRouter.get('/', BoardController.allTeams);
+BoardRouter.get('/', BoardController.getBoard);
+BoardRouter.get('/home', BoardController.getHome);
+BoardRouter.get('/away', BoardController.getAway);
 
 export default BoardRouter;

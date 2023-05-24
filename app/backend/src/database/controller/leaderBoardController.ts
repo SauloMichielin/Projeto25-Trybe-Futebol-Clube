@@ -2,18 +2,18 @@ import { Request, Response } from 'express';
 import BoardService from '../service/leaderBoardService';
 
 export default class BoardController {
-  static async homeTeams(_req: Request, res: Response) {
-    const response = await BoardService.homeTeams();
-    return res.json(response);
+  static async getHome(_req: Request, res: Response) {
+    const leaderBoard = await BoardService.LeaderBoard('home');
+    return res.status(200).json(leaderBoard);
   }
 
-  static async awayTeams(_req: Request, res: Response) {
-    const response = await BoardService.awayTeams();
-    return res.json(response);
+  static async getAway(_req: Request, res: Response) {
+    const leaderBoard = await BoardService.LeaderBoard('away');
+    return res.status(200).json(leaderBoard);
   }
 
-  static async allTeams(_req: Request, res: Response) {
-    const response = await BoardService.allTeams();
-    return res.json(response);
+  static async getBoard(_req: Request, res: Response) {
+    const leaderBoard = await BoardService.LeaderBoard('');
+    return res.status(200).json(leaderBoard);
   }
 }
