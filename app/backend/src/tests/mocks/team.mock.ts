@@ -1,4 +1,4 @@
-import TeamsInterface from '../../interface/teamInterface';
+import TeamsInterface from '../../database/interface/teamInterface';
 
 export const teamMok: TeamsInterface = {
   "id": 1,

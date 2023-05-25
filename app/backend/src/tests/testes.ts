@@ -1,9 +1,10 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
+// @ts-ignore
 import chaiHttp = require('chai-http');
 
-import { app } from '../../app';
-import teams from '../models/teams';
+import { app } from '../app';
+import teams from '../database/models/teams';
 import { teamMok, teamsMok } from './mocks/team.mock';
 import { matchesMok } from './mocks/matches.mock';
 
